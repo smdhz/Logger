@@ -121,6 +121,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="DB.sql" />
     <Content Include="KanColleViewerAssemblies\KanColleViewer.exe" />
     <Content Include="KanColleViewerAssemblies\KanColleWrapper.dll" />
     <Content Include="KanColleViewerAssemblies\System.Reactive.Core.dll" />
