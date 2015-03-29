@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using Grabacr07.KanColleViewer.Composition;
 
-namespace CodeA
+namespace Logger
 {
     [Export(typeof(IToolPlugin))]
     [ExportMetadata("Title", "CodeA")]
@@ -20,7 +20,7 @@ namespace CodeA
 
         public string ToolName
         {
-            get { return "CodeA"; }
+            get { return "Logger"; }
         }
 
         public object GetToolView()

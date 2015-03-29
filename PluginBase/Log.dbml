@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Note" Class="LogDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=Note;Integrated Security=True" SettingsObjectName="CodeA.Properties.Settings" SettingsPropertyName="NoteConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=Note;Integrated Security=True" SettingsObjectName="Logger.Properties.Settings" SettingsPropertyName="NoteConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.ShipLog" Member="ShipLog">
     <Type Name="ShipLog">
       <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />

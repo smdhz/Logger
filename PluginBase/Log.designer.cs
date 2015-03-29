@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CodeA
+namespace Logger
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -36,7 +36,7 @@ namespace CodeA
     #endregion
 		
 		public LogDataContext() : 
-				base(global::CodeA.Properties.Settings.Default.NoteConnectionString, mappingSource)
+				base(global::Logger.Properties.Settings.Default.NoteConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
