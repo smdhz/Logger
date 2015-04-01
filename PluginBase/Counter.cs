@@ -22,6 +22,8 @@ namespace Logger
 
         private bool OntheWay = false;
         private Guid FightID = Guid.Empty;
+
+        public ShipLog LastLog { get; private set; }
         
         private void Battle(kcsapi_battleresult data)
         {
@@ -34,7 +36,7 @@ namespace Logger
             // 记录
             using (LogDataContext db = new LogDataContext())
             {
-                ShipLog log = new ShipLog()
+                LastLog = new ShipLog()
                 {
                     Time = DateTime.Now,
                     Area = data.api_quest_name,
@@ -43,8 +45,8 @@ namespace Logger
                     Fight = FightID
                 };
                 if (data.api_get_ship != null)
-                    log.Drop = data.api_get_ship.api_ship_name;
-                db.ShipLog.InsertOnSubmit(log);
+                    LastLog.Drop = data.api_get_ship.api_ship_name;
+                db.ShipLog.InsertOnSubmit(LastLog);
                 db.SubmitChanges();
             }
         }
