@@ -25,7 +25,7 @@ namespace Logger
 
         public object GetToolView()
         {
-            return new Panel() { DataContext = counter.LastLog };
+            return new Panel() { DataContext = counter };
         }
 
         public object GetSettingsView()
