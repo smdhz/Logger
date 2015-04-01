@@ -9,10 +9,11 @@ using System.Xml.Serialization;
 using Grabacr07.KanColleWrapper;
 using Grabacr07.KanColleWrapper.Models.Raw;
 using Grabacr07.KanColleWrapper.Models;
+using System.ComponentModel;
 
 namespace Logger
 {
-    public class Counter
+    public class Counter : INotifyPropertyChanged
     {
         public Counter(KanColleProxy proxy)
         {
@@ -46,6 +47,7 @@ namespace Logger
                 };
                 if (data.api_get_ship != null)
                     LastLog.Drop = data.api_get_ship.api_ship_name;
+                PropertyChanged(this, new PropertyChangedEventArgs("LastLog"));
                 db.ShipLog.InsertOnSubmit(LastLog);
                 db.SubmitChanges();
             }
@@ -55,5 +57,7 @@ namespace Logger
         {
             OntheWay = false;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged = (se, ev) => { };
     }
 }

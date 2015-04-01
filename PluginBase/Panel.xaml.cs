@@ -20,12 +20,9 @@ namespace Logger
     /// </summary>
     public partial class Panel : UserControl
     {
-        public Counter Counter { private get; set; }
-
         public Panel()
         {
             InitializeComponent();
-            DataContext = Counter.LastLog;
         }
     }
 }
