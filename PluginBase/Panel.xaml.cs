@@ -20,8 +20,6 @@ namespace Logger
     /// </summary>
     public partial class Panel : UserControl
     {
-        public Counter Counter { get; set; }
-
         public Panel()
         {
             InitializeComponent();
