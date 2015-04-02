@@ -16,7 +16,7 @@ namespace Logger
     [ExportMetadata("Author", "Mystic Monkey")]
     public class Base : IToolPlugin
     {
-        private Counter counter = new Counter(Grabacr07.KanColleWrapper.KanColleClient.Current.Proxy);
+        private ViewModel counter = new ViewModel(Grabacr07.KanColleWrapper.KanColleClient.Current.Proxy);
 
         public string ToolName
         {

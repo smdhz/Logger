@@ -13,9 +13,9 @@ using System.ComponentModel;
 
 namespace Logger
 {
-    public class Counter : INotifyPropertyChanged
+    public class ViewModel : INotifyPropertyChanged
     {
-        public Counter(KanColleProxy proxy)
+        public ViewModel(KanColleProxy proxy)
         {
             proxy.api_req_sortie_battleresult.TryParse<kcsapi_battleresult>().Subscribe(x => Battle(x.Data));
             proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => Port(x.Data));
