@@ -10,8 +10,8 @@ using Grabacr07.KanColleViewer.Composition;
 namespace Logger
 {
     [Export(typeof(IToolPlugin))]
-    [ExportMetadata("Title", "CodeA")]
-    [ExportMetadata("Description", "")]
+    [ExportMetadata("Title", "Logger")]
+    [ExportMetadata("Description", "记录器")]
     [ExportMetadata("Version", "1.0")]
     [ExportMetadata("Author", "Mystic Monkey")]
     public class Base : IToolPlugin
