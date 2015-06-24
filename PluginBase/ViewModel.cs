@@ -17,17 +17,26 @@ namespace Logger
     {
         public ViewModel(KanColleProxy proxy)
         {
-            proxy.api_req_sortie_battleresult.TryParse<kcsapi_battleresult>().Subscribe(x => Battle(x.Data));
-            proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => Port(x.Data));
+            IsOnline = new LogDataContext().DatabaseExists();
+            if (IsOnline)
+            {
+                proxy.api_req_sortie_battleresult.TryParse<kcsapi_battleresult>().Subscribe(x => Battle(x.Data));
+                proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => OntheWay = false);
+            }
         }
 
         private bool OntheWay = false;
         private Guid FightID = Guid.Empty;
 
+        public bool IsOnline { get; private set; }
+        public bool IsOffline { get { return !IsOnline; } }
         public ShipLog LastLog { get; private set; }
-        
+
         private void Battle(kcsapi_battleresult data)
         {
+            if (!IsOnline)
+                return;
+
             if (!OntheWay)
             {
                 FightID = Guid.NewGuid();
@@ -51,11 +60,6 @@ namespace Logger
                 db.ShipLog.InsertOnSubmit(LastLog);
                 db.SubmitChanges();
             }
-        }
-
-        private void Port(kcsapi_port data)
-        {
-            OntheWay = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged = (se, ev) => { };
