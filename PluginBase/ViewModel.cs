@@ -17,16 +17,15 @@ namespace Logger
     {
         public ViewModel(KanColleProxy proxy)
         {
-            IsOnline = new LogDataContext().DatabaseExists();
-            if (IsOnline)
-            {
-                proxy.api_req_sortie_battleresult.TryParse<kcsapi_battleresult>().Subscribe(x => Battle(x.Data));
-                proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => OntheWay = false);
-            }
+            IsOnline = db.DatabaseExists();
+
+            proxy.api_req_sortie_battleresult.TryParse<kcsapi_battleresult>().Subscribe(x => Battle(x.Data));
+            proxy.api_port.TryParse<kcsapi_port>().Subscribe(x => OntheWay = false);
         }
 
         private bool OntheWay = false;
         private Guid FightID = Guid.Empty;
+        private LogDataContext db = new LogDataContext();
 
         public bool IsOnline { get; private set; }
         public bool IsOffline { get { return !IsOnline; } }
@@ -34,32 +33,43 @@ namespace Logger
 
         private void Battle(kcsapi_battleresult data)
         {
-            if (!IsOnline)
-                return;
-
             if (!OntheWay)
             {
                 FightID = Guid.NewGuid();
-                OntheWay = true;                    
+                OntheWay = true;
             }
 
-            // 记录
-            using (LogDataContext db = new LogDataContext())
+            // 准备数据
+            LastLog = new ShipLog()
             {
-                LastLog = new ShipLog()
-                {
-                    Time = DateTime.Now,
-                    Area = data.api_quest_name,
-                    Enemy = data.api_enemy_info.api_deck_name,
-                    Rank = data.api_win_rank,
-                    Fight = FightID
-                };
-                if (data.api_get_ship != null)
-                    LastLog.Drop = data.api_get_ship.api_ship_name;
-                PropertyChanged(this, new PropertyChangedEventArgs("LastLog"));
+                Time = DateTime.Now,
+                Area = data.api_quest_name,
+                Enemy = data.api_enemy_info.api_deck_name,
+                Rank = data.api_win_rank,
+                Fight = FightID
+            };
+            if (data.api_get_ship != null)
+                LastLog.Drop = data.api_get_ship.api_ship_name;
+            PropertyChanged(this, new PropertyChangedEventArgs("LastLog"));
+
+            // 写记录
+            if (IsOnline)
+            {
                 db.ShipLog.InsertOnSubmit(LastLog);
                 db.SubmitChanges();
             }
+            else
+                using (FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\ShipLog.csv", FileMode.Append))
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.WriteLine("{0},{1},{2},{3},{4},{5}",
+                        LastLog.Time,
+                        LastLog.Area,
+                        LastLog.Enemy,
+                        LastLog.Rank,
+                        LastLog.Drop,
+                        LastLog.Fight);
+                }
         }
 
         public event PropertyChangedEventHandler PropertyChanged = (se, ev) => { };
