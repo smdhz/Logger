@@ -60,9 +60,9 @@ namespace Logger
             }
             else
                 using (FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\ShipLog.csv", FileMode.Append))
-                using (StreamWriter writer = new StreamWriter(fs))
+                using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8))
                 {
-                    writer.WriteLine("{0},{1},{2},{3},{4},{5}",
+                    writer.WriteLine("{0},{1},{2},{3},{4},{{{5}}}",
                         LastLog.Time,
                         LastLog.Area,
                         LastLog.Enemy,
