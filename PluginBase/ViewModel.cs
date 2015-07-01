@@ -45,7 +45,7 @@ namespace Logger
                 Time = DateTime.Now,
                 Area = data.api_quest_name,
                 Enemy = data.api_enemy_info.api_deck_name,
-                Rank = data.api_win_rank,
+                Rank = data.api_win_rank.First(),
                 Fight = FightID
             };
             if (data.api_get_ship != null)
@@ -62,7 +62,7 @@ namespace Logger
                 using (FileStream fs = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\ShipLog.csv", FileMode.Append))
                 using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8))
                 {
-                    writer.WriteLine("{0},{1},{2},{3},{4},{{{5}}}",
+                    writer.WriteLine("{0:yyyy-MM-dd HH:mm:ss.fff},{1},{2},{3},{4},{{{5}}}",
                         LastLog.Time,
                         LastLog.Area,
                         LastLog.Enemy,
