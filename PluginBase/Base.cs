@@ -9,28 +9,21 @@ using Grabacr07.KanColleViewer.Composition;
 
 namespace Logger
 {
-    [Export(typeof(IToolPlugin))]
+    [Export(typeof(IPlugin))]
+    [Export(typeof(ITool))]
+    [ExportMetadata("Guid", "7f41e3a9-e203-4fef-9eaf-8e1f30873b97")]
     [ExportMetadata("Title", "Logger")]
     [ExportMetadata("Description", "记录器")]
     [ExportMetadata("Version", "1.0")]
     [ExportMetadata("Author", "Mystic Monkey")]
-    public class Base : IToolPlugin
+    public class Base : IPlugin, ITool
     {
-        private ViewModel counter = new ViewModel(Grabacr07.KanColleWrapper.KanColleClient.Current.Proxy);
+        private ViewModel counter;
 
-        public string ToolName
-        {
-            get { return "Logger"; }
-        }
+        public string Name => "Logger";
 
-        public object GetToolView()
-        {
-            return new Panel() { DataContext = counter };
-        }
+        public object View => new Panel() { DataContext = counter };
 
-        public object GetSettingsView()
-        {
-            return null;
-        }
+        public void Initialize() { counter = new ViewModel(Grabacr07.KanColleWrapper.KanColleClient.Current.Proxy); }
     }
 }
