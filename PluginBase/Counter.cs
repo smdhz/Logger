@@ -10,6 +10,8 @@ using Grabacr07.KanColleWrapper;
 using Grabacr07.KanColleWrapper.Models.Raw;
 using Grabacr07.KanColleWrapper.Models;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Runtime.Serialization.Json;
 
 namespace Logger
 {
@@ -25,8 +27,6 @@ namespace Logger
         private bool OntheWay = false;
         private Guid FightID = Guid.Empty;
         
-        //private ShipLog record;
-
         private void Battle(kcsapi_battleresult data)
         {
             if (!OntheWay)
@@ -34,19 +34,27 @@ namespace Logger
                 FightID = Guid.NewGuid();
                 OntheWay = true;
             }
-
+            
             // 准备数据
-            //record = new ShipLog()
-            //{
-            //    Time = DateTime.Now,
-            //    Area = data.api_quest_name,
-            //    Enemy = data.api_enemy_info.api_deck_name,
-            //    Rank = data.api_win_rank.First(),
-            //    Fight = FightID,
-            //    Drop= data.api_get_ship?.api_ship_name
-            //};
+            var record = new
+            {
+                Time = DateTime.Now,
+                Area = data.api_quest_name,
+                Enemy = data.api_enemy_info.api_deck_name,
+                Rank = data.api_win_rank.First(),
+                Fight = FightID,
+                Drop = data.api_get_ship?.api_ship_name
+            };
 
-            // 写记录
+            using (HttpClient client = new HttpClient())
+            using (MemoryStream ms = new MemoryStream())
+            {
+                DataContractJsonSerializer se = new DataContractJsonSerializer(record.GetType());
+                // 写记录
+                //client.PutAsync(
+                //    "http://smdhz.cf/Api/odata/ShipLogs",
+                //    new StringContent(se.));
+            }
         }
     }
 }
